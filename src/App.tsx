@@ -7,23 +7,19 @@ import { USER_ID } from './api/todos';
 import { deleteTodo } from './api/todos';
 
 interface Todo {
-  id: number,
-  title: string,
-  completed: boolean,
+  id: number;
+  title: string;
+  completed: boolean;
 }
 
 export const App: React.FC = () => {
-  const [todos, setTodos] = useState([]);
+  const [todos, setTodos] = useState<Todo[]>([]);
   const [error, setError] = useState(null);
   const [filter, setFilter] = useState('all');
   const [newTitle, setNewTitle] = useState('');
   const [isAdding, setIsAdding] = useState(false);
-  const [tempTodo, setTempTodo] = useState<any>(null);
+  const [tempTodo, setTempTodo] = useState<Todo | null>(null);
   const [deletingIds, setDeletingIds] = useState<number[]>([]);
-
-  useEffect(() => {
-    loadTodos();
-  }, []);
 
   const showError = (message: string) => {
     setError(message);
@@ -44,6 +40,10 @@ export const App: React.FC = () => {
       showError('Unable to load todos');
     }
   };
+
+  useEffect(() => {
+    loadTodos();
+  }, [loadTodos]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -76,7 +76,7 @@ export const App: React.FC = () => {
 
       setTodos(prev => [...prev, newTodoFromServer]);
       setNewTitle('');
-    } catch (e) {
+    } catch (el) {
       showError('Unable to add a todo');
     } finally {
       setIsAdding(false);
@@ -91,7 +91,7 @@ export const App: React.FC = () => {
     try {
       await deleteTodo(id);
 
-      setTodos(prev => prev.filter(todo => todo.id !== id))
+      setTodos(prev => prev.filter(todo => todo.id !== id));
     } catch (e) {
       showError('Unable to add a todo');
     } finally {
@@ -109,6 +109,7 @@ export const App: React.FC = () => {
     setError(null);
 
     const ids = completedTodos.map(todo => todo.id);
+
     setDeletingIds(prev => [...prev, ...ids]);
 
     try {
@@ -118,9 +119,7 @@ export const App: React.FC = () => {
     } catch (e) {
       showError('Unable to delete a todo');
     } finally {
-      setDeletingIds(prev =>
-        prev.filter(id => !ids.includes(id))
-      );
+      setDeletingIds(prev => prev.filter(id => !ids.includes(id)));
     }
   };
 
@@ -210,8 +209,9 @@ export const App: React.FC = () => {
                   ×
                 </button>
 
-                <div data-cy="TodoLoader"
-                    className={`modal overlay ${deletingIds.includes(todo.id) ? 'is-active' : ''}`}
+                <div
+                  data-cy="TodoLoader"
+                  className={`modal overlay ${deletingIds.includes(todo.id) ? 'is-active' : ''}`}
                 >
                   <div className="modal-background has-background-white-ter" />
                   <div className="loader" />
