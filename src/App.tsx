@@ -29,21 +29,21 @@ export const App: React.FC = () => {
     }, 3000);
   };
 
-  const loadTodos = async () => {
-    setError(null);
-
-    try {
-      const data = await getTodos();
-
-      setTodos(data);
-    } catch (e) {
-      showError('Unable to load todos');
-    }
-  };
-
   useEffect(() => {
+    const loadTodos = async () => {
+      setError(null);
+
+      try {
+        const data = await getTodos();
+
+        setTodos(data);
+      } catch (e) {
+        showError('Unable to load todos');
+      }
+    };
+
     loadTodos();
-  }, [loadTodos]);
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
