@@ -19,7 +19,7 @@ interface Todo {
 export const App: React.FC = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const [filter, setFilter] = useState<Filter>(Filter.All);
+  const [filter, setFilter] = useState('all');
   const [newTitle, setNewTitle] = useState('');
   const [isAdding, setIsAdding] = useState(false);
 
