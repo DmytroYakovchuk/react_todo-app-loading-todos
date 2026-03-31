@@ -23,7 +23,7 @@ export const App: React.FC = () => {
   const [newTitle, setNewTitle] = useState('');
   const [isAdding, setIsAdding] = useState(false);
 
-  const [tempTodo, setTempTodo] = useState<Todo | null>(null); // ✅ вот он
+  const [tempTodo, setTempTodo] = useState<Todo | null>(null);
   const [deletingIds, setDeletingIds] = useState<number[]>([]);
 
   const showError = (message: string) => {
